@@ -31,4 +31,19 @@ class ParkingBoyFacts {
 
         assertNotNull(fetchedCar);
     }
+
+    @Test
+    public void should_get_correct_car_by_parking_boy() {
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        Car firstCar = new Car();
+        Car otherCar = new Car();
+
+        parkingBoy.park(otherCar);
+        ParkingTicket ticket = parkingBoy.park(firstCar);
+        Car fetchedCar = parkingBoy.fetch(ticket);
+
+        assertSame(fetchedCar, firstCar);
+        assertNotSame(fetchedCar, otherCar);
+    }
 }
