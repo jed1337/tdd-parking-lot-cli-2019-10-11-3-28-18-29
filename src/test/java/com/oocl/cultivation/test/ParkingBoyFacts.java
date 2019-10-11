@@ -78,4 +78,32 @@ class ParkingBoyFacts {
         Car carFetchedByUsedTicket = parkingBoy.fetch(ticket);
         assertNull(carFetchedByUsedTicket);
     }
+
+    @Test
+    public void should_not_be_able_to_park_when_parking_lot_is_full() {
+        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
+
+        for (int i = 0; i < 10; i++) {
+            parkingBoy.park(new Car());
+        }
+
+        ParkingTicket ticketFromFullParking = parkingBoy.park(new Car());
+        assertNull(ticketFromFullParking);
+    }
+
+
+    @Test
+    public void should_be_able_to_park_when_a_car_is_fetched_from_a_full_parking_lot() {
+        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
+
+        ParkingTicket firstCarTicket = parkingBoy.park(new Car());
+        for (int i = 0; i < 9; i++) {
+            parkingBoy.park(new Car());
+        }
+
+        parkingBoy.fetch(firstCarTicket);
+
+        ParkingTicket ticket = parkingBoy.park(new Car());
+        assertNotNull(ticket);
+    }
 }
