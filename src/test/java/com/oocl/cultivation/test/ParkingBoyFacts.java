@@ -39,11 +39,31 @@ class ParkingBoyFacts {
         Car firstCar = new Car();
         Car otherCar = new Car();
 
+        parkingBoy.park(firstCar);
         parkingBoy.park(otherCar);
         ParkingTicket ticket = parkingBoy.park(firstCar);
         Car fetchedCar = parkingBoy.fetch(ticket);
 
         assertSame(fetchedCar, firstCar);
         assertNotSame(fetchedCar, otherCar);
+    }
+
+    @Test
+    public void should_return_no_car_if_no_ticket_is_given_to_parking_boy() {
+        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
+
+        Car fetchedCar = parkingBoy.fetch(null);
+
+        assertNull(fetchedCar);
+    }
+
+    @Test
+    public void should_return_no_car_if_wrong_ticket_is_given_to_parking_boy() {
+        ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
+        ParkingTicket wrongTicket = new ParkingTicket();
+
+        Car fetchedCar = parkingBoy.fetch(wrongTicket);
+
+        assertNull(fetchedCar);
     }
 }
