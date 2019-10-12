@@ -32,4 +32,8 @@ public class ParkingLot {
     public Car fetchCar(ParkingTicket ticket) {
         return cars.remove(ticket);
     }
+
+    public int getNumberOfEmptyParkingSpace(){
+        return capacity - cars.size();
+    }
 }

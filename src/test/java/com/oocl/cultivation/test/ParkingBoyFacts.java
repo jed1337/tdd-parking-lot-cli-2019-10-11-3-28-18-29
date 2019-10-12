@@ -202,6 +202,58 @@ class ParkingBoyFacts {
         assertEquals(firstParkingLot.fetchCar(thirdParkingTicket), thirdCar);
     }
 
+    @Test
+    public void should_park_in_multiple_parking_lots_with_smart_parking_boy() {
+        ParkingLot firstParkingLot = new ParkingLot(1);
+        ParkingLot secondParkingLot = new ParkingLot(1);
+        List<ParkingLot> parkingLotList = Arrays.asList(firstParkingLot, secondParkingLot);
+        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLotList);
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+
+        ParkingTicket firstParkingLotTicket = smartParkingBoy.park(firstCar);
+        ParkingTicket secondParkingLotTicket = smartParkingBoy.park(secondCar);
+
+        assertEquals(firstParkingLot.fetchCar(firstParkingLotTicket), firstCar);
+        assertEquals(secondParkingLot.fetchCar(secondParkingLotTicket), secondCar);
+    }
+
+    @Test
+    public void should_park_in_parking_lot_with_more_space_by_smart_parking_boy_given_parking_lot_with_same_size() {
+        ParkingLot lessSpaceParkingLot = new ParkingLot(5);
+        lessSpaceParkingLot.park(new Car());
+        lessSpaceParkingLot.park(new Car());
+        lessSpaceParkingLot.park(new Car());
+
+        ParkingLot moreSpaceParkingLot = new ParkingLot(5);
+
+        List<ParkingLot> parkingLotList = Arrays.asList(lessSpaceParkingLot, moreSpaceParkingLot);
+        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLotList);
+        Car myCar = new Car();
+
+        assertEquals(lessSpaceParkingLot.getNumberOfEmptyParkingSpace(), 2);
+        assertEquals(moreSpaceParkingLot.getNumberOfEmptyParkingSpace(), 5);
+
+        ParkingTicket ticket = smartParkingBoy.park(myCar);
+        assertEquals(moreSpaceParkingLot.fetchCar(ticket), myCar);
+    }
+
+    @Test
+    public void should_park_in_parking_lot_with_more_space_by_smart_parking_boy_given_parking_lot_with_different_size() {
+        ParkingLot lessSpaceParkingLot = new ParkingLot(5);
+        ParkingLot moreSpaceParkingLot = new ParkingLot(10);
+
+        List<ParkingLot> parkingLotList = Arrays.asList(lessSpaceParkingLot, moreSpaceParkingLot);
+        SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLotList);
+        Car myCar = new Car();
+
+        assertEquals(lessSpaceParkingLot.getNumberOfEmptyParkingSpace(), 5);
+        assertEquals(moreSpaceParkingLot.getNumberOfEmptyParkingSpace(), 10);
+
+        ParkingTicket ticket = smartParkingBoy.park(myCar);
+        assertEquals(moreSpaceParkingLot.fetchCar(ticket), myCar);
+    }
+
     private void fillParkingLot(ParkingBoy parkingboy) {
         while (true) {
             if(parkingboy.park(new Car()) == null){
