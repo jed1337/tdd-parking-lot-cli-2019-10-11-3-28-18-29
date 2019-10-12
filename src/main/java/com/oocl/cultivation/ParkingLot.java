@@ -15,8 +15,8 @@ public class ParkingLot {
         this.capacity = capacity;
     }
 
-    public int getAvailableParkingPosition() {
-        return cars.size() - capacity;
+    public boolean isFull() {
+        return cars.size() >= capacity;
     }
 
     public ParkingTicket park(Car car) {

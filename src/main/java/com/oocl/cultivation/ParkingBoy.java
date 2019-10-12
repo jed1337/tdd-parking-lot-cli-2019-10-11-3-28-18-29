@@ -9,7 +9,13 @@ public class ParkingBoy {
     }
 
     public ParkingTicket park(Car car) {
-        return parkingLot.park(car);
+        if(!parkingLot.isFull()){
+            return parkingLot.park(car);
+        }
+        else{
+            System.out.println("Not enough position");
+            return null;
+        }
     }
 
     public Car fetch(ParkingTicket ticket) {

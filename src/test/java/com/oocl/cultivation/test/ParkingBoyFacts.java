@@ -95,9 +95,7 @@ class ParkingBoyFacts {
     public void should_not_be_able_to_park_when_parking_lot_is_full() {
         ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
 
-        for (int i = 0; i < 10; i++) {
-            parkingBoy.park(new Car());
-        }
+        fillParkingLot(parkingBoy);
 
         ParkingTicket ticketFromFullParking = parkingBoy.park(new Car());
         assertNull(ticketFromFullParking);
@@ -119,7 +117,7 @@ class ParkingBoyFacts {
     }
 
     @Test
-    public void should_error_message_when_parking_boy_is_given_no_ticket() {
+    public void should_create_error_message_when_parking_boy_is_given_no_ticket() {
         ParkingBoy parkingboy = new ParkingBoy(new ParkingLot());
 
         parkingboy.fetch(null);
@@ -128,7 +126,7 @@ class ParkingBoyFacts {
     }
 
     @Test
-    public void should_error_message_when_parking_boy_is_given_wrong_ticket() {
+    public void should_create_error_message_when_parking_boy_is_given_wrong_ticket() {
         ParkingBoy parkingboy = new ParkingBoy(new ParkingLot());
         Car myCar = new Car();
         ParkingTicket wrongTicket = new ParkingTicket();
@@ -137,5 +135,25 @@ class ParkingBoyFacts {
         parkingboy.fetch(wrongTicket);
 
         assertTrue(out.toString().contains("Unrecognized parking ticket"));
+    }
+
+    @Test
+    public void should_create_error_message_when_attempt_to_park_in_full_lot() {
+        ParkingBoy parkingboy = new ParkingBoy(new ParkingLot());
+        Car myCar = new Car();
+
+        fillParkingLot(parkingboy);
+
+        parkingboy.park(myCar);
+
+        assertTrue(out.toString().contains("Not enough position"));
+    }
+
+    private void fillParkingLot(ParkingBoy parkingboy) {
+        while (true) {
+            if(parkingboy.park(new Car()) == null){
+                break;
+            }
+        }
     }
 }
