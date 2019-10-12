@@ -197,9 +197,9 @@ class ParkingBoyFacts {
     }
 
     @Test
-    public void should_park_in_multiple_parking_lots_with_smart_parking_boy() {
-        ParkingLot firstParkingLot = new ParkingLot(1);
-        ParkingLot secondParkingLot = new ParkingLot(1);
+    public void should_park_in_the_first_parking_lot_available_given_multiple_parking_lots_with_the_same_space_by_smart_parking_boy() {
+        ParkingLot firstParkingLot = new ParkingLot(5);
+        ParkingLot secondParkingLot = new ParkingLot(5);
         List<ParkingLot> parkingLotList = Arrays.asList(firstParkingLot, secondParkingLot);
         SmartParkingBoy smartParkingBoy = new SmartParkingBoy(parkingLotList);
         Car firstCar = new Car();
