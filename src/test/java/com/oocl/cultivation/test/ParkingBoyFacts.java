@@ -4,11 +4,23 @@ import com.oocl.cultivation.Car;
 import com.oocl.cultivation.ParkingBoy;
 import com.oocl.cultivation.ParkingLot;
 import com.oocl.cultivation.ParkingTicket;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingBoyFacts {
+    private ByteArrayOutputStream out;
+
+    @BeforeEach
+    void setUp() {
+         out = new ByteArrayOutputStream();
+         System.setOut(new PrintStream(out));
+    }
+
     @Test
     public void should_park_car_by_parking_boy_and_return_ticket(){
         Car car = new Car();
@@ -90,8 +102,7 @@ class ParkingBoyFacts {
         ParkingTicket ticketFromFullParking = parkingBoy.park(new Car());
         assertNull(ticketFromFullParking);
     }
-
-
+    
     @Test
     public void should_be_able_to_park_when_a_car_is_fetched_from_a_full_parking_lot() {
         ParkingBoy parkingBoy = new ParkingBoy(new ParkingLot());
@@ -105,5 +116,26 @@ class ParkingBoyFacts {
 
         ParkingTicket ticket = parkingBoy.park(new Car());
         assertNotNull(ticket);
+    }
+
+    @Test
+    public void should_error_message_when_parking_boy_is_given_no_ticket() {
+        ParkingBoy parkingboy = new ParkingBoy(new ParkingLot());
+
+        parkingboy.fetch(null);
+
+        assertTrue(out.toString().contains("Unrecognized parking ticket"));
+    }
+
+    @Test
+    public void should_error_message_when_parking_boy_is_given_wrong_ticket() {
+        ParkingBoy parkingboy = new ParkingBoy(new ParkingLot());
+        Car myCar = new Car();
+        ParkingTicket wrongTicket = new ParkingTicket();
+
+        ParkingTicket correctTicket = parkingboy.park(myCar);
+        parkingboy.fetch(wrongTicket);
+
+        assertTrue(out.toString().contains("Unrecognized parking ticket"));
     }
 }

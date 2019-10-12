@@ -1,7 +1,6 @@
 package com.oocl.cultivation;
 
 public class ParkingBoy {
-
     private final ParkingLot parkingLot;
     private String lastErrorMessage;
 
@@ -14,7 +13,12 @@ public class ParkingBoy {
     }
 
     public Car fetch(ParkingTicket ticket) {
-        return parkingLot.fetchCar(ticket);
+        Car car = parkingLot.fetchCar(ticket);
+        if (car == null) {
+            System.out.println("Unrecognized parking ticket");
+        }
+
+        return car;
     }
 
     public String getLastErrorMessage() {
