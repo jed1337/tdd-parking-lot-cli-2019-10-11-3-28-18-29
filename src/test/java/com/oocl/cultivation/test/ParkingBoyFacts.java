@@ -16,14 +16,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingBoyFacts {
-    private ByteArrayOutputStream out;
-
-    @BeforeEach
-    void setUp() {
-         out = new ByteArrayOutputStream();
-         System.setOut(new PrintStream(out));
-    }
-
     @Test
     public void should_park_car_by_parking_boy_and_return_ticket(){
         Car car = new Car();
@@ -125,7 +117,7 @@ class ParkingBoyFacts {
 
         parkingboy.fetch(null);
 
-        assertTrue(out.toString().contains("Please provide your parking ticket"));
+        assertEquals(parkingboy.getLastErrorMessage(), "Please provide your parking ticket");
     }
 
     @Test
@@ -137,7 +129,7 @@ class ParkingBoyFacts {
         ParkingTicket correctTicket = parkingboy.park(myCar);
         parkingboy.fetch(wrongTicket);
 
-        assertTrue(out.toString().contains("Unrecognized parking ticket"));
+        assertEquals(parkingboy.getLastErrorMessage(), "Unrecognized parking ticket");
     }
 
     @Test
@@ -149,7 +141,7 @@ class ParkingBoyFacts {
 
         parkingboy.park(myCar);
 
-        assertTrue(out.toString().contains("Not enough position"));
+        assertEquals(parkingboy.getLastErrorMessage(), "Not enough position");
     }
 
     @Test

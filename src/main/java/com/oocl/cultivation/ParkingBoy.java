@@ -27,20 +27,22 @@ public class ParkingBoy {
             return firstParkingLotWithSpace.park(car);
         }
         else{
-            System.out.println("Not enough position");
+            lastErrorMessage = "Not enough position";
             return null;
         }
     }
 
     public Car fetch(ParkingTicket ticket) {
         if (ticket == null) {
-            System.out.println("Please provide your parking ticket");
+            lastErrorMessage = "Please provide your parking ticket";
+            return null;
         }
 
         Car car = fetchCarFromParkingLotList(ticket);
 
         if (car == null) {
-            System.out.println("Unrecognized parking ticket");
+            lastErrorMessage = "Unrecognized parking ticket";
+            return null;
         }
         return car;
     }
