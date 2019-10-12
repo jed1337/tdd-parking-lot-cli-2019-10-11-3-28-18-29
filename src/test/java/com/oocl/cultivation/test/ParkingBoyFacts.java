@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -147,6 +150,64 @@ class ParkingBoyFacts {
         parkingboy.park(myCar);
 
         assertTrue(out.toString().contains("Not enough position"));
+    }
+
+    @Test
+    public void should_be_able_to_park_in_multiple_parking_lots() {
+        List<ParkingLot> parkingLotList = new ArrayList<>();
+        parkingLotList.add(new ParkingLot());
+        parkingLotList.add(new ParkingLot());
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
+
+        ParkingTicket zerothTicket = parkingBoy.park(new Car());
+
+        for (int i = 1; i <= 14; i++) {
+            parkingBoy.park(new Car());
+        }
+
+        ParkingTicket fifteenthTicket = parkingBoy.park(new Car());
+
+        Car fetchedZerothCar = parkingBoy.fetch(zerothTicket);
+        Car fetchedTwentiethCar = parkingBoy.fetch(fifteenthTicket);
+
+        assertNotNull(fetchedZerothCar);
+        assertNotNull(fetchedTwentiethCar);
+    }
+
+    @Test
+    public void should_park_in_the_first_parking_lot_with_space() {
+        ParkingLot firstParkingLot = new ParkingLot(1);
+        ParkingLot secondParkingLot = new ParkingLot(1);
+        List<ParkingLot> parkingLotList = Arrays.asList(firstParkingLot, secondParkingLot);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+
+        ParkingTicket firstParkingLotTicket = parkingBoy.park(firstCar);
+        ParkingTicket secondParkingLotTicket = parkingBoy.park(secondCar);
+
+        assertEquals(firstParkingLot.fetchCar(firstParkingLotTicket), firstCar);
+        assertEquals(secondParkingLot.fetchCar(secondParkingLotTicket), secondCar);
+    }
+
+    @Test
+    public void should_park_in_the_first_parking_lot_with_space_when_a_car_is_removed_from_a_previously_full_lot() {
+        ParkingLot firstParkingLot = new ParkingLot(1);
+        ParkingLot secondParkingLot = new ParkingLot(1);
+        List<ParkingLot> parkingLotList = Arrays.asList(firstParkingLot, secondParkingLot);
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
+        Car firstCar = new Car();
+
+        ParkingTicket firstParkingLotTicket = parkingBoy.park(firstCar);
+        parkingBoy.park(new Car());
+
+        assertEquals(firstParkingLot.fetchCar(firstParkingLotTicket), firstCar);
+        assertFalse(firstParkingLot.isFull());
+        assertTrue(secondParkingLot.isFull());
+
+        Car thirdCar = new Car();
+        ParkingTicket thirdParkingTicket = parkingBoy.park(thirdCar);
+        assertEquals(firstParkingLot.fetchCar(thirdParkingTicket), thirdCar);
     }
 
     private void fillParkingLot(ParkingBoy parkingboy) {
