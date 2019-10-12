@@ -124,7 +124,7 @@ class ParkingBoyFacts {
 
         parkingboy.fetch(null);
 
-        assertTrue(out.toString().contains("Unrecognized parking ticket"));
+        assertTrue(out.toString().contains("Please provide your parking ticket"));
     }
 
     @Test
