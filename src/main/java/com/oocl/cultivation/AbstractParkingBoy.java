@@ -15,7 +15,20 @@ public abstract class AbstractParkingBoy {
         this.parkingLotList = parkingLotList;
     }
 
-    public abstract ParkingTicket park(Car car);
+    public ParkingTicket park(Car car){
+        boolean allParkingLotsAreFull = parkingLotList.stream()
+                .allMatch(ParkingLot::isFull);
+
+        if(!allParkingLotsAreFull){
+            return getBestParkingLot().park(car);
+        }
+        else{
+            lastErrorMessage = "Not enough position";
+            return null;
+        }
+    }
+
+    protected abstract ParkingLot getBestParkingLot();
 
     public Car fetch(ParkingTicket ticket) {
         if (ticket == null) {

@@ -13,20 +13,10 @@ public class ParkingBoy extends AbstractParkingBoy {
     }
 
     @Override
-    public ParkingTicket park(Car car) {
-        boolean allParkingLotsAreFull = parkingLotList.stream()
-                .allMatch(ParkingLot::isFull);
-
-        if(!allParkingLotsAreFull){
-            ParkingLot firstParkingLotWithSpace = parkingLotList.stream()
-                    .filter(parkingLot -> !parkingLot.isFull())
-                    .findFirst()
-                    .get();
-            return firstParkingLotWithSpace.park(car);
-        }
-        else{
-            lastErrorMessage = "Not enough position";
-            return null;
-        }
+    protected ParkingLot getBestParkingLot() {
+        return parkingLotList.stream()
+                .filter(parkingLot -> !parkingLot.isFull())
+                .findFirst()
+                .get();
     }
 }
