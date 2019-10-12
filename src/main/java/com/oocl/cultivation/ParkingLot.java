@@ -19,6 +19,10 @@ public class ParkingLot {
         return cars.size() >= capacity;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     public ParkingTicket park(Car car) {
         if(cars.size()>=capacity){
             return null;

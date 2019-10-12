@@ -254,6 +254,38 @@ class ParkingBoyFacts {
         assertEquals(moreSpaceParkingLot.fetchCar(ticket), myCar);
     }
 
+    @Test
+    public void should_park_in_parking_lot_with_larger_available_position_rate_with_super_smart_parking_boy_given_parking_lot_with_different_size() {
+        ParkingLot lessSpaceRateParkingLot = new ParkingLot(5);
+        ParkingLot moreSpaceRateParkingLot = new ParkingLot(10);
+
+        List<ParkingLot> parkingLotList = Arrays.asList(lessSpaceRateParkingLot, moreSpaceRateParkingLot);
+        SuperSmartParkingBoy superSmartParkingBoy = new SuperSmartParkingBoy(parkingLotList);
+        Car myCar = new Car();
+
+        ParkingTicket ticket = superSmartParkingBoy.park(myCar);
+        assertEquals(moreSpaceRateParkingLot.fetchCar(ticket), myCar);
+    }
+
+    @Test
+    public void should_park_in_parking_lot_with_larger_available_position_rate_with_super_smart_parking_boy_given_parking_lot_with_different_space_rate() {
+        ParkingLot lessSpaceRateParkingLot = new ParkingLot(10);
+        lessSpaceRateParkingLot.park(new Car());
+        lessSpaceRateParkingLot.park(new Car());
+
+        ParkingLot moreSpaceRateParkingLot = new ParkingLot(5);
+
+//        AC1. The super smart parking boy will always park cars to
+//        the parking lot which has a larger available position rate (positions available / total capacity).
+
+        List<ParkingLot> parkingLotList = Arrays.asList(lessSpaceRateParkingLot, moreSpaceRateParkingLot);
+        SuperSmartParkingBoy superSmartParkingBoy = new SuperSmartParkingBoy(parkingLotList);
+        Car myCar = new Car();
+
+        ParkingTicket ticket = superSmartParkingBoy.park(myCar);
+        assertEquals(moreSpaceRateParkingLot.fetchCar(ticket), myCar);
+    }
+
     private void fillParkingLot(ParkingBoy parkingboy) {
         while (true) {
             if(parkingboy.park(new Car()) == null){
